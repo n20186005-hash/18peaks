@@ -1,0 +1,232 @@
+---
+import "maplibre-gl/dist/maplibre-gl.css";
+import Icon from "./Icon.astro";
+
+const filters = [
+  { value: "all", label: "全部設施" },
+  { value: "entrance", label: "入口" },
+  { value: "parking", label: "停車" },
+  { value: "toilet", label: "公廁" },
+  { value: "water", label: "飲水" },
+  { value: "pavilion", label: "涼亭" },
+];
+---
+
+<section id="park-map" class="park-map-card" data-park-map-card aria-labelledby="park-map-title">
+  <div class="park-map-heading">
+    <div>
+      <p class="eyebrow"><Icon name="map" size={16} /> GeoJSON 園內設施圖</p>
+      <h2 id="park-map-title">進入園區後，設施在哪裡？</h2>
+      <p>切換分類尋找入口、停車、公廁、飲水與涼亭；步道路線與點位來自開放圖資，現場請以告示為準。</p>
+    </div>
+    <div class="park-map-counts" aria-label="圖面資料概況">
+      <span>2 處入口</span><span>4 處公廁</span><span>17 處飲水</span><span>18 座涼亭</span>
+    </div>
+  </div>
+
+  <div class="park-map-toolbar" role="group" aria-label="設施分類篩選">
+    {filters.map((filter, index) => (
+      <button type="button" class:list={["park-filter", { active: index === 0 }]} data-map-filter={filter.value} aria-pressed={index === 0 ? "true" : "false"}>
+        {filter.label}
+      </button>
+    ))}
+  </div>
+
+  <div class="park-map-shell">
+    <div id="park-geojson-map" class="park-map" role="region" aria-label="十八尖山園內步道與設施地圖"></div>
+    <div class="park-map-loading" data-map-loading aria-live="polite"><span></span>園內地圖載入中…</div>
+    <div class="park-map-error" data-map-error hidden>
+      <strong>園內地圖暫時無法載入</strong>
+      <p>仍可使用上方 Google 地圖導航，或直接查看入口資訊。</p>
+    </div>
+    <div class="park-map-legend" aria-label="地圖圖例">
+      <span><i class="legend-main"></i>一般步道</span>
+      <span><i class="legend-steps"></i>階梯路段</span>
+      <span><i class="legend-poi"></i>設施點位</span>
+    </div>
+  </div>
+
+  <div class="park-map-note">
+    <Icon name="info" size={18} />
+    <p><strong>資料說明：</strong>本圖用於行前辨識相對位置，不代表步道、設施或停車場目前開放；請勿只依圖面進入未開放支線。</p>
+  </div>
+</section>
+
+<script>
+  const typeGroups: Record<string, string[]> = {
+    entrance: ["entrance"],
+    parking: ["parking", "moto-parking", "youbike"],
+    toilet: ["toilet"],
+    water: ["water"],
+    pavilion: ["pavilion", "peak", "viewpoint"],
+  };
+
+  const typeLabels: Record<string, string> = {
+    entrance: "入口",
+    parking: "汽車停車",
+    "moto-parking": "機車停車",
+    youbike: "YouBike",
+    toilet: "公廁",
+    water: "飲水",
+    pavilion: "涼亭",
+    peak: "高點",
+    viewpoint: "觀景點",
+  };
+
+  const sourceLabels: Record<string, string> = {
+    osm: "OpenStreetMap 開放圖資",
+    estimated: "公開圖資推估",
+    official: "主管機關資料",
+  };
+
+  const card = document.querySelector<HTMLElement>("[data-park-map-card]");
+  const container = document.querySelector<HTMLElement>("#park-geojson-map");
+
+  if (card && container) {
+    const loading = card.querySelector<HTMLElement>("[data-map-loading]");
+    const error = card.querySelector<HTMLElement>("[data-map-error]");
+
+    const initialiseMap = async () => {
+      try {
+      const { default: maplibregl } = await import("maplibre-gl");
+      const map = new maplibregl.Map({
+        container,
+        center: [120.9841, 24.7921],
+        zoom: 15.5,
+        minZoom: 13,
+        maxZoom: 19,
+        attributionControl: false,
+        style: {
+          version: 8,
+          sources: {
+            osm: {
+              type: "raster",
+              tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+              tileSize: 256,
+              attribution: "© OpenStreetMap 貢獻者",
+            },
+          },
+          layers: [{ id: "osm", type: "raster", source: "osm" }],
+        },
+      });
+
+      map.addControl(new maplibregl.NavigationControl({ showCompass: false }), "top-right");
+      map.addControl(new maplibregl.AttributionControl({ compact: true }), "bottom-right");
+      map.addControl(new maplibregl.ScaleControl({ unit: "metric", maxWidth: 100 }), "bottom-left");
+
+      map.on("load", () => {
+        map.addSource("park", { type: "geojson", data: "/data/park.geojson" });
+        map.addSource("trails", { type: "geojson", data: "/data/trails.geojson" });
+        map.addSource("pois", { type: "geojson", data: "/data/pois.geojson" });
+
+        map.addLayer({
+          id: "park-fill",
+          type: "fill",
+          source: "park",
+          paint: { "fill-color": "#7ca98a", "fill-opacity": 0.14 },
+        });
+        map.addLayer({
+          id: "park-outline",
+          type: "line",
+          source: "park",
+          paint: { "line-color": "#1d4b39", "line-width": 2, "line-opacity": 0.72 },
+        });
+        map.addLayer({
+          id: "trail-lines",
+          type: "line",
+          source: "trails",
+          paint: {
+            "line-color": ["case", ["==", ["get", "highway"], "steps"], "#a84e3d", "#356b50"],
+            "line-width": ["case", ["==", ["get", "highway"], "steps"], 2.4, 3.2],
+            "line-dasharray": ["case", ["==", ["get", "highway"], "steps"], ["literal", [1.2, 1.2]], ["literal", [1, 0]]],
+            "line-opacity": 0.88,
+          },
+        });
+        map.addLayer({
+          id: "poi-points",
+          type: "circle",
+          source: "pois",
+          paint: {
+            "circle-radius": ["case", ["in", ["get", "type"], ["literal", ["entrance", "parking"]]], 7, 5.5],
+            "circle-color": [
+              "match", ["get", "type"],
+              "entrance", "#e9a934",
+              "parking", "#3568a8",
+              "moto-parking", "#3568a8",
+              "youbike", "#2c8b89",
+              "toilet", "#6d58a8",
+              "water", "#2b86b8",
+              "pavilion", "#a84e3d",
+              "peak", "#d1792c",
+              "viewpoint", "#d1792c",
+              "#51615a",
+            ],
+            "circle-stroke-color": "#ffffff",
+            "circle-stroke-width": 2,
+          },
+        });
+
+        map.on("click", "poi-points", (event) => {
+          const feature = event.features?.[0];
+          if (!feature || feature.geometry.type !== "Point") return;
+          const properties = feature.properties ?? {};
+          const popup = document.createElement("div");
+          popup.className = "map-popup-content";
+          const label = document.createElement("span");
+          label.textContent = typeLabels[String(properties.type)] ?? "園內設施";
+          const title = document.createElement("strong");
+          title.textContent = String(properties.name || "未命名點位");
+          const note = document.createElement("p");
+          note.textContent = String(properties.note || "位置來自開放圖資，使用前請確認現場標示。");
+          const source = document.createElement("small");
+          source.textContent = `資料來源：${sourceLabels[String(properties.sourceType)] ?? "公開資料"}`;
+          popup.append(label, title, note, source);
+
+          new maplibregl.Popup({ closeButton: true, offset: 9 })
+            .setLngLat(feature.geometry.coordinates as [number, number])
+            .setDOMContent(popup)
+            .addTo(map);
+        });
+
+        map.on("mouseenter", "poi-points", () => { map.getCanvas().style.cursor = "pointer"; });
+        map.on("mouseleave", "poi-points", () => { map.getCanvas().style.cursor = ""; });
+
+        card.querySelectorAll<HTMLButtonElement>("[data-map-filter]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const value = button.dataset.mapFilter ?? "all";
+            const types = typeGroups[value];
+            map.setFilter("poi-points", types ? ["in", ["get", "type"], ["literal", types]] : null);
+            card.querySelectorAll<HTMLButtonElement>("[data-map-filter]").forEach((item) => {
+              const active = item === button;
+              item.classList.toggle("active", active);
+              item.setAttribute("aria-pressed", String(active));
+            });
+          });
+        });
+
+        if (loading) loading.hidden = true;
+      });
+
+      map.on("error", (event) => {
+        if (String(event.error?.message ?? "").includes("tile")) return;
+        if (loading) loading.hidden = true;
+        if (error) error.hidden = false;
+      });
+      } catch {
+        if (loading) loading.hidden = true;
+        if (error) error.hidden = false;
+      }
+    };
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void initialiseMap();
+      }, { rootMargin: "320px" });
+      observer.observe(container);
+    } else {
+      void initialiseMap();
+    }
+  }
+</script>

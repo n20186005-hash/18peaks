@@ -1,0 +1,12 @@
+---
+import RouteDetail from "../../../components/RouteDetail.astro";
+import image from "../../../assets/img/happiness-pavilion.jpg";
+const steps = [
+  { name: "博愛街入口", time: "約 10 分鐘", note: "先使用廁所、補水，確認每個人的體力狀況。" },
+  { name: "第一涼亭", time: "約 10–15 分鐘", note: "第一個短休息點，可觀察周邊植物與鳥類。" },
+  { name: "沿主線逐段前進", time: "約 15 分鐘", note: "不走階梯捷徑，每段之間都可坐下休息。" },
+  { name: "幸福亭", time: "約 25–35 分鐘", note: "主要折返點；體力允許再向前走一小段。" },
+  { name: "沿主線返回入口", note: "回程緩下，留意小朋友奔跑與自行車。" },
+];
+---
+<RouteDetail title="親子與長者路線（60–90 分鐘）" description="用「隨時可折返」的方式安排，走鋪面主線、避開階梯，以涼亭為節點控制節奏。" duration="60–90 分鐘" distance="約 2–3 公里" difficulty="輕鬆" audience="親子、長者" stairs="避開階梯支線" entrance="博愛街入口" entranceUrl="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681" surface="鋪面主線｜以涼亭為休息節點" returnPlan="任何涼亭皆可折返，不設定終點" weatherProfile="family" image={image} imageAlt="幸福亭" {steps} facilities={["主線休息點間距較短", "沿途有公廁與飲水機", "入口周邊有停車場與 YouBike"]} cautions={["不設定必須走完的目標", "夏季避開炎熱時段", "嬰兒車與輪椅通行需依現場確認"]}/>

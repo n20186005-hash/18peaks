@@ -1,0 +1,12 @@
+---
+import RouteDetail from "../../../components/RouteDetail.astro";
+import image from "../../../assets/img/trail-main.jpg";
+const steps = [
+  { name: "博愛街入口", time: "約 10 分鐘", note: "從鋪面主線出發，坡度相對平緩。" },
+  { name: "第一涼亭群", time: "約 10 分鐘", note: "沿線座椅與涼亭密集，依體力隨時停下。" },
+  { name: "幸福亭", time: "約 15 分鐘", note: "主線上的人氣休息點，可作為較短行程折返點。" },
+  { name: "桂花巷口", time: "約 25 分鐘", note: "綠蔭夾道，秋季留意桂花香；在此折返。" },
+  { name: "沿主線返回入口", note: "回程大致緩下坡，維持自己的步行節奏。" },
+];
+---
+<RouteDetail title="林蔭散步線（約 60 分鐘）" description="以鋪面主線為主，避開階梯捷徑，沿途有涼亭、飲水與公廁，適合輕鬆散步。" duration="約 60 分鐘" distance="約 2.5 公里" difficulty="輕鬆" audience="長者、親子" stairs="以無階梯主線為主" entrance="博愛街入口" entranceUrl="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681" surface="鋪面主線｜多數路段有樹蔭" returnPlan="幸福亭或桂花巷口皆可折返" weatherProfile="paved" image={image} imageAlt="十八尖山林蔭主步道" {steps} facilities={["主線沿途有多處飲水機", "公廁與涼亭分布密集", "博愛街入口有導覽圖與 YouBike"]} cautions={["一般球鞋即可，雨天仍要防滑", "勿誤入階梯捷徑或未開放支線", "嬰兒車通行細節仍需現場確認"]}/>

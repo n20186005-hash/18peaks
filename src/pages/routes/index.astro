@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import RouteWeatherGuide from "../../components/RouteWeatherGuide.astro";
+import quick from "../../assets/img/jieshou-pavilion.jpg";
+import easy from "../../assets/img/trail-main.jpg";
+import classic from "../../assets/img/city-view-2.jpg";
+import family from "../../assets/img/happiness-pavilion.jpg";
+const routes = [
+  { image: quick, time: "30–45 分鐘", name: "快速登頂線", desc: "直上介壽亭，適合時間有限、能接受連續階梯的人。", href: "/routes/quick-summit/", tag: "階梯較多" },
+  { image: easy, time: "約 60 分鐘", name: "林蔭散步線", desc: "沿鋪面主線慢走，涼亭與休息點密集，隨時可折返。", href: "/routes/easy-walk/", tag: "輕鬆好走" },
+  { image: classic, time: "90–120 分鐘", name: "經典環線", desc: "一次串連主要涼亭、觀景點、石觀音與桂花巷。", href: "/routes/classic-loop/", tag: "初訪首選" },
+  { image: family, time: "60–90 分鐘", name: "親子與長者路線", desc: "以休息節奏規劃，避開階梯支線，不設定必走完的目標。", href: "/routes/family/", tag: "隨時折返" },
+];
+---
+<BaseLayout title="十八尖山路線總覽：30、60、90 分鐘怎麼走" description="按時間選擇十八尖山路線：快速登頂、林蔭散步、經典環線與親子長者路線，附階梯與設施資訊。">
+  <PageHero eyebrow="按時間與同行對象選擇" title="30、60、90 分鐘，今天想怎麼走？" lead="每條路線都標示建議時間、階梯情況與適合對象。第一次來，建議從經典環線或林蔭散步線開始。" icon="route" />
+  <section class="section">
+    <div class="container-site">
+      <div class="answer-box"><p class="q">十八尖山要走多久？</p><p>只登上主要高點約需 30 至 45 分鐘；沿鋪面主線散步約 60 至 90 分鐘；想加入歷史遺跡與支線，建議預留 2 至 3 小時。</p></div>
+      <RouteWeatherGuide />
+      <div class="route-selector">
+        {routes.map((route) => <a class="route-card" href={route.href}><img src={route.image.src} width={route.image.width} height={route.image.height} alt={route.name} loading="lazy"/><div class="route-card-body"><span class="today-route-badge" data-today-route hidden>今日較適合</span><span class="route-card-time">{route.time} · {route.tag}</span><h3>{route.name}</h3><p>{route.desc}</p><span class="route-go">查看分段路線 <Icon name="arrow" size={16}/></span></div></a>)}
+      </div>
+    </div>
+  </section>
+  <section class="section section-soft"><div class="container-site"><div class="section-head"><div><p class="eyebrow"><Icon name="compass" size={16}/> 三個選擇題</p><h2>不知道怎麼選？</h2></div></div><div class="card-grid cols-3"><div class="icon-card"><Icon name="clock" size={27}/><h3>少於一小時</h3><p>走快速登頂線，直接上介壽亭後原路或循主線返回。</p></div><div class="icon-card"><Icon name="users" size={27}/><h3>帶小孩或長輩</h3><p>選林蔭散步或親子路線，全程留在鋪面主線。</p></div><div class="icon-card"><Icon name="camera" size={27}/><h3>第一次想看完整</h3><p>選經典環線，把地標涼亭、展望與歷史遺跡串起來。</p></div></div></div></section>
+</BaseLayout>

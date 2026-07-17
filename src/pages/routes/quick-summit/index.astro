@@ -1,0 +1,12 @@
+---
+import RouteDetail from "../../../components/RouteDetail.astro";
+import image from "../../../assets/img/jieshou-pavilion.jpg";
+const steps = [
+  { name: "博愛街入口", time: "約 8 分鐘", note: "入口周邊有停車場與 YouBike，出發前先補水。" },
+  { name: "主步道岔路", time: "約 12 分鐘", note: "離開鋪面主線，取階梯捷徑上行。" },
+  { name: "連續階梯段", time: "約 10 分鐘", note: "全程最費力的一段，途中可在涼亭休息。" },
+  { name: "介壽亭", time: "約 15 分鐘", note: "最高點附近的地標涼亭，休息後原路或循主線下山。" },
+  { name: "返回博愛街入口", note: "下階梯留意膝蓋，雨後建議改走鋪面主線。" },
+];
+---
+<RouteDetail title="快速登頂線（30–45 分鐘）" description="從博愛街入口利用階梯捷徑直上介壽亭，時間短、強度集中，適合體力足且行程有限的人。" duration="30–45 分鐘" distance="約 1.6 公里" difficulty="中等" audience="時間有限者" stairs="有連續階梯" entrance="博愛街入口" entranceUrl="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681" surface="階梯捷徑為主｜遮蔭依路段" returnPlan="介壽亭折返；雨後改走鋪面主線" weatherProfile="stairs" image={image} imageAlt="介壽亭" {steps} facilities={["博愛街入口有公廁、飲水與導覽圖", "階梯沿途有涼亭可休息", "介壽亭周邊有座椅與展望"]} cautions={["連續階梯對膝蓋負擔較大", "雨後階梯濕滑，改走主線較安全", "夏季避開中午高溫時段"]}/>

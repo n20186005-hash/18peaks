@@ -1,0 +1,86 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import ParkMap from "../../components/ParkMap.astro";
+
+const googleMapsUrl = "https://maps.app.goo.gl/ecPgMQwEuVp1GwtYA";
+const googleMapsEmbed = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115929.83152962029!2d120.86404870240692!3d24.767797559465244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3468360f0c5f07cf%3A0xadb31fc15391e11b!2sEighteen%20Peaks%20Mountain!5e0!3m2!1szh-TW!2stw!4v1784280867384!5m2!1szh-TW!2stw";
+---
+
+<BaseLayout title="十八尖山 Google 地圖與入口導航" description="使用 Google 地圖查看新竹十八尖山位置、周邊道路與導航資訊，並快速前往博愛街或寶山路入口。">
+  <PageHero eyebrow="Google Maps 導航" title="一張地圖，看清楚怎麼走" lead="直接查看十八尖山在新竹市區的位置、周邊道路與入口方向。需要即時導航時，可一鍵開啟 Google 地圖 App。" icon="map" />
+
+  <section class="section-sm">
+    <div class="container-site">
+      <div class="google-map-shell">
+        <iframe
+          src={googleMapsEmbed}
+          title="十八尖山 Google 地圖"
+          width="1200"
+          height="680"
+          style="border:0;"
+          allowfullscreen
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+
+      <div class="map-action-bar">
+        <div>
+          <p class="map-action-kicker">準備出發</p>
+          <h2>用 Google 地圖開啟完整導航</h2>
+          <p>可查看即時路況、選擇交通方式，或直接分享地點給同行者。</p>
+        </div>
+        <div class="map-action-buttons">
+          <a class="btn btn-primary" href={googleMapsUrl} target="_blank" rel="noopener noreferrer">
+            <Icon name="external" /> 開啟 Google 地圖
+          </a>
+          <a class="btn btn-outline" href="/route-map/"><Icon name="map" /> 查看官方路線圖</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-site">
+      <ParkMap />
+    </div>
+  </section>
+
+  <section class="section section-soft">
+    <div class="container-site">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow"><Icon name="pin" size={16} /> 不要導航到山體中央</p>
+          <h2>依行程選擇正確入口</h2>
+          <p class="section-lead">第一次到訪建議走博愛街入口；要前往防空洞、桐花步道或高峰植物園，再選寶山路入口。</p>
+        </div>
+        <a class="text-link" href="/entrances/">查看完整入口比較 <Icon name="arrow" size={16} /></a>
+      </div>
+
+      <div class="card-grid cols-2">
+        <article class="map-entry-card">
+          <span class="map-entry-icon"><Icon name="pin" /></span>
+          <div>
+            <p class="map-entry-label">首訪、親子、長者推薦</p>
+            <h3>博愛街入口</h3>
+            <p>鄰近停車場、公車站與 YouBike，銜接鋪面主線最直覺。</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681" target="_blank" rel="noopener noreferrer">導航到博愛街入口 <Icon name="external" size={15} /></a>
+          </div>
+        </article>
+        <article class="map-entry-card">
+          <span class="map-entry-icon"><Icon name="route" /></span>
+          <div>
+            <p class="map-entry-label">支線探索、高峰植物園</p>
+            <h3>寶山路入口</h3>
+            <p>適合走南側支線，周邊停車位置較分散，出發前先確認路線。</p>
+            <a href="https://www.google.com/maps/search/?api=1&query=24.788673%2C120.981396" target="_blank" rel="noopener noreferrer">導航到寶山路入口 <Icon name="external" size={15} /></a>
+          </div>
+        </article>
+      </div>
+
+      <div class="note-box">Google 地圖適合確認位置與道路導航，但園內支線、階梯及臨時封閉仍以現場導覽圖、圍欄與主管機關公告為準。</div>
+    </div>
+  </section>
+</BaseLayout>

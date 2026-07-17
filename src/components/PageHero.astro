@@ -1,0 +1,15 @@
+---
+import Icon from "./Icon.astro";
+interface Props { eyebrow?: string; title: string; lead: string; icon?: string; }
+const { eyebrow = "十八尖山導覽", title, lead, icon = "mountain" } = Astro.props;
+---
+<section class="page-hero">
+  <div class="container-site page-hero-inner">
+    <div>
+      <p class="eyebrow"><Icon name={icon} size={16} /> {eyebrow}</p>
+      <h1>{title}</h1>
+      <p class="lead">{lead}</p>
+    </div>
+    <div class="hero-contours" aria-hidden="true"><span></span><span></span><span></span></div>
+  </div>
+</section>

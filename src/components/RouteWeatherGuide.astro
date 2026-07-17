@@ -1,0 +1,173 @@
+---
+import Icon from "./Icon.astro";
+
+interface Props {
+  profile?: "overview" | "stairs" | "paved" | "long" | "family";
+}
+
+const { profile = "overview" } = Astro.props;
+---
+
+<aside class="route-weather-guide" data-route-weather data-profile={profile} aria-live="polite" aria-busy="true">
+  <div class="route-weather-icon"><Icon name="sun" size={24} /></div>
+  <div class="route-weather-copy">
+    <span class="badge badge-unknown" data-route-weather-status>正在讀取天氣</span>
+    <strong data-route-weather-title>準備今日路線提醒</strong>
+    <p data-route-weather-text>將依降雨、陣風與高溫調整建議。</p>
+    <div class="route-weather-values" data-route-weather-values hidden>
+      <span>時段 <b data-route-weather-day>--</b></span>
+      <span>體感 <b data-route-weather-temperature>--°</b></span>
+      <span>降雨 <b data-route-weather-rain>--%</b></span>
+      <span>陣風 <b data-route-weather-gust>-- km/h</b></span>
+    </div>
+  </div>
+  <a class="route-weather-action" href="/status/" data-route-weather-action><span data-route-weather-action-label>查看今日狀況</span> <Icon name="arrow" size={15} /></a>
+</aside>
+
+<script>
+  interface WeatherResponse {
+    current: {
+      temperature: number;
+      apparentTemperature: number;
+      weatherCode: number;
+      isDay: boolean;
+    };
+    today: {
+      weatherCode: number;
+      maxTemperature: number;
+      precipitationProbability: number;
+      maxWindGust: number;
+    };
+    advice: {
+      level: "good" | "watch" | "avoid";
+      title: string;
+      text: string;
+    };
+  }
+
+  interface Recommendation {
+    level: "good" | "watch" | "avoid";
+    status: string;
+    title: string;
+    text: string;
+    href: string;
+    action: string;
+  }
+
+  const recommendationFor = (weather: WeatherResponse, profile: string): Recommendation => {
+    const rain = weather.today.precipitationProbability;
+    const gust = weather.today.maxWindGust;
+    const heat = Math.max(weather.current.apparentTemperature, weather.today.maxTemperature);
+    const thunder = [82, 95, 96, 99].includes(weather.current.weatherCode) || [82, 95, 96, 99].includes(weather.today.weatherCode);
+
+    if (weather.current.isDay === false) {
+      return {
+        level: "avoid",
+        status: "目前為夜間",
+        title: "不建議在夜間進入步道",
+        text: "園內照明與現場路況難以確認，請改在白天並重新查看天氣後再出發。",
+        href: "/status/",
+        action: "查看今日狀況",
+      };
+    }
+
+    if (thunder) {
+      return {
+        level: "avoid",
+        status: "雷雨請暫緩",
+        title: "雷雨時不要進入步道",
+        text: "目前或今日預報含雷雨天氣代碼，請延後行程並遠離稜線、涼亭與樹下。",
+        href: "/status/",
+        action: "查看完整天氣",
+      };
+    }
+
+    if (weather.advice.level === "avoid") {
+      return {
+        level: "avoid",
+        status: "建議暫緩",
+        title: "今天的天氣風險偏高",
+        text: weather.advice.text,
+        href: "/status/",
+        action: "查看完整天氣",
+      };
+    }
+
+    if (profile === "overview") {
+      if (rain >= 45) return { level: "watch", status: "優先走主線", title: "今天優先選擇鋪面路線", text: "降雨機率偏高，建議選林蔭散步線並避開階梯與泥土支線。", href: "/routes/easy-walk/", action: "查看林蔭散步線" };
+      if (gust >= 40) return { level: "watch", status: "留意強風", title: "今天優先走林蔭散步線", text: "新竹風勢可能較強，請留意落枝並縮短高點與稜線停留。", href: "/routes/easy-walk/", action: "查看林蔭散步線" };
+      if (heat >= 33) return { level: "watch", status: "留意高溫", title: "優先安排短程或清晨行程", text: "請攜帶足量飲水，避免在炎熱時段安排長距離環線。", href: "/routes/quick-summit/", action: "查看短程路線" };
+      return { level: "good", status: "今日較適合", title: "林蔭散步線負擔較平衡", text: "天氣條件相對穩定，鋪面主線可依時間與體力彈性折返。", href: "/routes/easy-walk/", action: "查看林蔭散步線" };
+    }
+
+    if (profile === "stairs" && (rain >= 30 || gust >= 40)) {
+      return { level: "watch", status: "建議改走主線", title: "今天不適合把階梯當主要路線", text: "降雨或風勢會提高階梯風險，建議改走鋪面主線的林蔭散步線。", href: "/routes/easy-walk/", action: "改看林蔭散步線" };
+    }
+
+    if (profile === "long" && (rain >= 35 || gust >= 40 || heat >= 33)) {
+      return { level: "watch", status: "建議縮短", title: "今天不宜勉強走完整環線", text: "可改在介壽亭或主要涼亭折返，並預留提早下山的時間。", href: "/routes/easy-walk/", action: "查看較短路線" };
+    }
+
+    if (profile === "family" && (rain >= 35 || gust >= 35 || heat >= 32)) {
+      return { level: "watch", status: "降低負擔", title: "親子與長者行程請保守安排", text: "縮短每一段距離、增加休息與補水，必要時在第一座涼亭折返。", href: "/status/", action: "查看完整天氣" };
+    }
+
+    if (profile === "paved" && rain >= 45) {
+      return { level: "watch", status: "主線仍需防滑", title: "鋪面路線也要留意積水", text: "維持在主線並縮短行程，不要轉入階梯或泥土支線。", href: "/status/", action: "查看完整天氣" };
+    }
+
+    return { level: "good", status: "天氣相對穩定", title: "可依原規劃評估出發", text: "請在入口再次確認告示，途中若出現雷聲、強風或身體不適就立即折返。", href: "/status/", action: "查看完整天氣" };
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-route-weather]").forEach((guide) => {
+    const setText = (selector: string, value: string) => {
+      const element = guide.querySelector(selector);
+      if (element) element.textContent = value;
+    };
+
+    fetch("/api/weather", { headers: { Accept: "application/json" } })
+      .then((response) => {
+        if (!response.ok) throw new Error("Weather request failed");
+        return response.json();
+      })
+      .then((weather: WeatherResponse) => {
+        const result = recommendationFor(weather, guide.dataset.profile ?? "overview");
+        guide.dataset.level = result.level;
+        setText("[data-route-weather-status]", result.status);
+        setText("[data-route-weather-title]", result.title);
+        setText("[data-route-weather-text]", result.text);
+        setText("[data-route-weather-day]", weather.current.isDay !== false ? "日間" : "夜間");
+        setText("[data-route-weather-temperature]", `${Math.round(weather.current.apparentTemperature)}°`);
+        setText("[data-route-weather-rain]", `${Math.round(weather.today.precipitationProbability)}%`);
+        setText("[data-route-weather-gust]", `${Math.round(weather.today.maxWindGust)} km/h`);
+
+        const badge = guide.querySelector<HTMLElement>("[data-route-weather-status]");
+        if (badge) badge.className = `badge ${result.level === "good" ? "badge-ok" : result.level === "avoid" ? "badge-danger" : "badge-warn"}`;
+        const values = guide.querySelector<HTMLElement>("[data-route-weather-values]");
+        if (values) values.hidden = false;
+        const action = guide.querySelector<HTMLAnchorElement>("[data-route-weather-action]");
+        if (action) {
+          action.href = result.href;
+          setText("[data-route-weather-action-label]", result.action);
+        }
+        if ((guide.dataset.profile ?? "overview") === "overview" && result.level !== "avoid" && result.href.startsWith("/routes/")) {
+          document.querySelectorAll<HTMLElement>(".route-card.today-route").forEach((card) => card.classList.remove("today-route"));
+          document.querySelectorAll<HTMLElement>("[data-today-route]").forEach((label) => { label.hidden = true; });
+          const card = document.querySelector<HTMLAnchorElement>(`.route-card[href="${result.href}"]`);
+          if (card) {
+            card.classList.add("today-route");
+            const label = card.querySelector<HTMLElement>("[data-today-route]");
+            if (label) label.hidden = false;
+          }
+        }
+        guide.setAttribute("aria-busy", "false");
+      })
+      .catch(() => {
+        guide.dataset.level = "unknown";
+        setText("[data-route-weather-status]", "天氣暫時無法取得");
+        setText("[data-route-weather-title]", "請直接查看中央氣象署");
+        setText("[data-route-weather-text]", "無法取得自動預報時，不依天氣推薦路線。");
+        guide.setAttribute("aria-busy", "false");
+      });
+  });
+</script>

@@ -1,0 +1,13 @@
+---
+import RouteDetail from "../../../components/RouteDetail.astro";
+import image from "../../../assets/img/city-view-2.jpg";
+const steps = [
+  { name: "博愛街入口", time: "約 15 分鐘", note: "看入口導覽圖、補水後，循主線上行。" },
+  { name: "幸福亭", time: "約 15 分鐘", note: "第一個主要涼亭，視體力稍作休息。" },
+  { name: "介壽亭", time: "約 10 分鐘", note: "最高點附近的地標，也是主要拍照點。" },
+  { name: "觀景點", time: "約 20 分鐘", note: "天氣清朗時可眺望新竹市區。" },
+  { name: "石觀音沿線", time: "約 15 分鐘", note: "留意步道旁的歷史石像與環境標示。" },
+  { name: "桂花巷", time: "約 25 分鐘", note: "循主線完成環線並返回博愛街入口。" },
+];
+---
+<RouteDetail title="經典環線（90–120 分鐘）" description="第一次完整遊覽的首選，串連主要涼亭、展望、石觀音與桂花巷，適合保留半天慢慢走。" duration="90–120 分鐘" distance="約 4.2 公里" difficulty="中等" audience="第一次完整遊覽" stairs="主線為主、局部坡段" entrance="博愛街入口" entranceUrl="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681" surface="鋪面主線為主｜局部坡段" returnPlan="可在幸福亭或介壽亭提早折返" weatherProfile="long" image={image} imageAlt="十八尖山望向新竹市區" {steps} facilities={["約每 10–15 分鐘可找到休息點", "主線沿途有公廁與飲水機", "介壽亭與展望點適合停留"]} cautions={["距離較長，夏季帶足飲水", "傍晚出發需預留天黑前下山時間", "體力不足可於介壽亭提早折返"]}/>

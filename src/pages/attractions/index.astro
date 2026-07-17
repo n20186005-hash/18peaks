@@ -1,0 +1,22 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import jieshou from "../../assets/img/jieshou-pavilion.jpg";
+import happiness from "../../assets/img/happiness-pavilion.jpg";
+import trail from "../../assets/img/trail-main.jpg";
+import guanyin from "../../assets/img/stone-guanyin.jpg";
+import airRaid from "../../assets/img/air-raid-trail.jpg";
+import city from "../../assets/img/universities-view.jpg";
+const attractions = [
+  { id: "jieshou", image: jieshou, n: "01 · 地標涼亭", title: "介壽亭", text: "位於最高點附近，是十八尖山最具代表性的休息點之一。快速登頂路線以此為主要目標；天氣清朗時可眺望新竹市區。" },
+  { id: "happiness", image: happiness, n: "02 · 主線休息點", title: "幸福亭", text: "主線上的人氣涼亭，距離博愛街入口適中。親子與長者路線可把這裡設為折返點，不必為了「走完全程」勉強前進。" },
+  { id: "osmanthus", image: trail, n: "03 · 林蔭步道", title: "桂花巷", text: "樹蔭包圍的主線路段，秋季常能聞到桂花香。路面相對友善，但仍需留意坡度、行人及自行車。" },
+  { id: "guanyin", image: guanyin, n: "04 · 歷史遺跡", title: "石觀音", text: "日治時期於山中設置的觀音石像，是理解十八尖山歷史的重要線索。請在原處觀賞，不攀爬、不觸摸或移動文物。" },
+  { id: "airraid", image: airRaid, n: "05 · 軍事遺跡", title: "防空洞與支線", text: "二戰時期留下的軍事化痕跡，集中於寶山路端部分支線。洞體與邊坡可能有安全風險，請勿進入封閉區域。" },
+  { id: "viewpoint", image: city, n: "06 · 城市展望", title: "觀景點", text: "從山間望向新竹市區、清大與陽明交大方向，是十八尖山作為「城市森林」最鮮明的體驗。冬季稜線風強，停留時注意保暖。" },
+];
+---
+<BaseLayout title="十八尖山景點：涼亭、石觀音與防空洞" description="認識十八尖山介壽亭、幸福亭、桂花巷、石觀音、防空洞與城市展望等代表景點。">
+  <PageHero eyebrow="走路之外的風景" title="六個地方，讀懂十八尖山" lead="這裡不只是運動路線。涼亭承接市民日常，石觀音與防空洞則留下不同時代的城市記憶。" icon="camera" />
+  <section class="section"><div class="container-site">{attractions.map((item) => <article class="feature-row" id={item.id}><div class="feature-image"><img src={item.image.src} width={item.image.width} height={item.image.height} alt={item.title} loading="lazy"/></div><div class="feature-copy"><span class="feature-number">{item.n}</span><h2>{item.title}</h2><p>{item.text}</p><a class="text-link" href="/map/">在地圖上找位置 →</a></div></article>)}</div></section>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import pavilion from "../../assets/img/changchun-pavilion.jpg";
+---
+<BaseLayout title="十八尖山廁所、飲水與休息設施" description="查看十八尖山公廁、飲水機、涼亭與休息點分布，並了解嬰兒車及無障礙通行注意事項。">
+  <PageHero eyebrow="沿途補給與休息" title="廁所、飲水、涼亭在哪裡？" lead="依現有公開圖資整理 4 處公廁、17 個飲水點與 18 座涼亭。設施位置與現場可用性仍以園區導覽圖及標示為準。" icon="drop" />
+  <section class="section"><div class="container-site"><div class="card-grid cols-3"><div class="icon-card"><Icon name="toilet" size={30}/><h3>公廁 · 4 處</h3><p>兩大入口與主線附近皆有點位。帶幼兒或長者建議從博愛街入口先使用廁所再出發。</p></div><div class="icon-card"><Icon name="drop" size={30}/><h3>飲水 · 17 處</h3><p>自帶水瓶可沿線補充，但不應把單一飲水點當作唯一水源；夏季請先帶足飲水。</p></div><div class="icon-card"><Icon name="pavilion" size={30}/><h3>涼亭 · 18 座</h3><p>主線休息點密集，適合把涼亭當作分段目標；活動時段請與其他使用者共享空間。</p></div></div><div style="margin-top:24px"><a class="btn btn-primary" href="/map/"><Icon name="map"/> 打開 Google 地圖</a></div></div></section>
+  <section class="section section-soft"><div class="container-site"><div class="feature-row"><div class="feature-image"><img src={pavilion.src} width={pavilion.width} height={pavilion.height} alt="十八尖山長春亭" loading="lazy"/></div><div class="feature-copy"><span class="feature-number">休息節奏</span><h2>不要等累了才停</h2><p>長者與親子路線建議以涼亭為節奏點，短距離、多次休息。若出現頭暈、胸悶或明顯不適，應立刻停止前進並尋求協助。</p></div></div><div class="prose-tc content-narrow"><h2>嬰兒車與無障礙</h2><p>主要鋪面道路相對平整，但仍有坡度、路口與不連續路段；階梯捷徑無法通行。本站尚未逐段完成輪椅與嬰兒車的無障礙審查，因此不宣稱全線無障礙。行前請向主管機關確認，並由同行者評估現場狀況。</p><div class="note-box">地圖點位表示「資料中有這個設施」，不等於設施此刻一定開放或可用。若發現位置錯誤或設施維修，請透過關於本站頁面提供回報。</div></div></div></section>
+</BaseLayout>

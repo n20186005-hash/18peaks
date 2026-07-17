@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import stele from "../../assets/img/park-stele.jpg";
+import guanyin from "../../assets/img/stone-guanyin.jpg";
+---
+<BaseLayout title="十八尖山歷史與生態：城市森林如何形成" description="從日治時期森林公園、石觀音、二戰防空洞到今日市民步道，認識十八尖山的歷史與生態。">
+  <PageHero eyebrow="一座山，幾個時代" title="從森林公園到市民的山" lead="十八尖山的價值不只在自然。公園建設、宗教石像、戰爭遺跡與戰後休閒共同疊加，才成為今天的新竹城市森林。" icon="leaf" />
+  <section class="section"><div class="container-site content-with-aside"><article class="article-card"><img class="route-cover" src={stele.src} width={stele.width} height={stele.height} alt="十八尖山公園石碑"/><div class="article-card-inner"><div class="timeline"><div class="timeline-item"><h2>日治時期：森林公園成形</h2><p>十八尖山逐步被規劃為城市近郊的森林與休閒空間。今日步道路網與涼亭文化，延續了市民親近丘陵的使用方式。</p></div><div class="timeline-item"><h2>石觀音：山徑上的信仰</h2><p>山中設置的觀音石像成為獨特文化景觀。許多石像經歷遷移或損毀，現存者應以文化遺跡態度對待。</p></div><div class="timeline-item"><h2>二戰：軍事化與防空洞</h2><p>戰爭期間山體被賦予軍事功能，防空洞與相關遺構留下時代痕跡。結構安全情況不一，封閉區域切勿進入。</p></div><div class="timeline-item"><h2>戰後至今：市民的日常</h2><p>十八尖山成為晨間運動、親子散步與賞花活動的重要空間。它的意義，在於自然、歷史與日常生活同時存在。</p></div></div></div></article><aside class="trip-aside"><div class="aside-card"><p class="aside-kicker">走讀提醒</p><h2>留下來的，不代表可以進入</h2><p>軍事實體、邊坡與舊結構可能有落石或坍塌風險。請在開放步道觀賞，遵守圍欄與現場告示。</p></div><a class="btn btn-outline btn-wide" href="/attractions/#guanyin"><Icon name="camera"/> 查看石觀音</a></aside></div></section>
+  <section class="section section-soft"><div class="container-site"><div class="feature-row"><div class="feature-image"><img src={guanyin.src} width={guanyin.width} height={guanyin.height} alt="十八尖山石觀音" loading="lazy"/></div><div class="feature-copy"><span class="feature-number">尊重山林與文化資產</span><h2>只帶走照片，只留下腳步</h2><p>不觸摸、拓印、攀爬或移動石像；不進入封閉洞體；不採集植物、不餵食野生動物。遇到松鼠與鳥類，保持距離觀察即可。</p></div></div><div class="card-grid cols-3"><div class="icon-card"><Icon name="tree" size={28}/><h3>次生林與城市綠帶</h3><p>丘陵林地為城市提供遮蔭與生態連接，但也承受高密度遊憩壓力。</p></div><div class="icon-card"><Icon name="leaf" size={28}/><h3>原生與常見植物</h3><p>沿標示步道觀察，不採摘、不把種子與枝葉帶離園區。</p></div><div class="icon-card"><Icon name="shield" size={28}/><h3>野生動物</h3><p>不餵食、不追逐，垃圾與食物全部帶走，避免改變動物行為。</p></div></div></div></section>
+</BaseLayout>

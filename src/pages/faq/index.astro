@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+const faq = [
+  ["十八尖山要走多久？", "只登上主要高點約需 30 至 45 分鐘；沿鋪面主線散步約需 60 至 90 分鐘；加入歷史遺跡與支線，建議預留 2 至 3 小時。"],
+  ["從哪個入口上去比較好？", "第一次到訪且開車前往，優先選擇博愛街入口：停車與交通選擇較集中，接主線也最直覺。走防空洞或南側支線，再考慮寶山路入口。"],
+  ["有停車場嗎？收費嗎？", "博愛街入口周邊有停車場，寶山路端也有高峰植物園停車場。剩餘車位、收費方式與管制時段請以現場標示為準。"],
+  ["有廁所和飲水機嗎？", "有。現有公開圖資整理 4 處廁所與 17 個飲水點，但設施可能臨時維護；出發前仍建議自備足夠飲水。"],
+  ["適合小孩和長輩嗎？", "主線為鋪面道路，沿途休息點密集，適合依體力輕鬆走。請避開階梯支線，以隨時可折返為原則。"],
+  ["可以推嬰兒車或使用輪椅嗎？", "部分主線路面相對平整，但有坡度與不連續路段，本站尚未完成逐段無障礙審查，因此不宣稱全線適用。階梯捷徑無法通行。"],
+  ["雨天可以去嗎？", "小雨時鋪面主線仍需防滑，階梯與泥土支線應避免；雷雨、颱風或主管機關發布警示時不要上山。"],
+  ["花季是什麼時候？", "賞花活動多在 3 月前後，4–5 月可留意桐花，秋季有桂花。實際花期與活動日期以當年度公告為準。"],
+  ["從新竹火車站怎麼去？", "可步行約 25–35 分鐘、騎 YouBike 約 10–15 分鐘，或搭市區公車至新竹高商、新竹高中周邊再步行。"],
+  ["晚上可以走嗎？", "即使主線部分路段有照明，夜間視線與求援條件仍較差。請結伴、攜帶照明、留在開放主線，並以現場開放規定為準。"],
+];
+const schema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([q,a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) };
+---
+<BaseLayout title="十八尖山常見問題" description="十八尖山路線時間、入口、停車、廁所、飲水、親子、嬰兒車、雨天與花季常見問題。" {schema}>
+  <PageHero eyebrow="出發前快速解答" title="第一次去，最常問的十件事" lead="沒有把握的即時資訊，我們不替你猜。以下回答提供穩定的規劃原則，開放、天氣與交通仍請在出發前確認。" icon="info" />
+  <section class="section"><div class="container-site content-narrow"><div class="faq-list">{faq.map(([q,a]) => <details class="faq-item"><summary>{q}</summary><div class="faq-body"><p>{a}</p></div></details>)}</div></div></section>
+</BaseLayout>

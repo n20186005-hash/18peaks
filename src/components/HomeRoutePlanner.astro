@@ -1,0 +1,203 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<section class="container-site home-route-planner" data-home-route-planner aria-labelledby="route-planner-title">
+  <header class="home-route-planner-head">
+    <div>
+      <p class="eyebrow"><Icon name="route" size={16} /> 依你的行程與今日天氣推薦</p>
+      <h2 id="route-planner-title">回答三題，選出今天的路線</h2>
+    </div>
+    <p data-planner-weather-status>正在取得十八尖山目前天氣</p>
+  </header>
+
+  <div class="home-route-planner-grid">
+    <form class="planner-questions" data-planner-form>
+      <fieldset>
+        <legend><span>01</span> 可用時間</legend>
+        <div class="planner-options">
+          <label><input type="radio" name="time" value="short" /><span><b>短程</b><small>45 分鐘內</small></span></label>
+          <label><input type="radio" name="time" value="medium" checked /><span><b>一小時左右</b><small>約 45–90 分鐘</small></span></label>
+          <label><input type="radio" name="time" value="half" /><span><b>半日</b><small>可慢慢走</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span>02</span> 同行對象</legend>
+        <div class="planner-options">
+          <label><input type="radio" name="group" value="solo" checked /><span><b>個人</b><small>依自己步調</small></span></label>
+          <label><input type="radio" name="group" value="family" /><span><b>親子</b><small>需要休息點</small></span></label>
+          <label><input type="radio" name="group" value="senior" /><span><b>長者</b><small>降低路線負擔</small></span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span>03</span> 階梯接受度</legend>
+        <div class="planner-options planner-options-compact">
+          <label><input type="radio" name="stairs" value="yes" checked /><span><b>可以</b><small>可走階梯捷徑</small></span></label>
+          <label><input type="radio" name="stairs" value="avoid" /><span><b>盡量避免</b><small>優先走鋪面主線</small></span></label>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="planner-result" data-planner-result data-level="good" aria-live="polite">
+      <div class="planner-result-top">
+        <span class="badge badge-ok" data-planner-badge>目前推薦</span>
+        <span class="planner-result-time" data-planner-route-time>約 60 分鐘</span>
+      </div>
+      <p class="planner-result-kicker">依你的選擇</p>
+      <h3 data-planner-route-name>林蔭散步線</h3>
+      <p class="planner-result-reason" data-planner-reason>時間剛好，鋪面主線也能依體力隨時折返。</p>
+      <div class="planner-weather-facts" data-planner-weather-facts hidden>
+        <span><small>目前</small><b data-planner-day>--</b></span>
+        <span><small>體感</small><b data-planner-feels>--°</b></span>
+        <span><small>最高降雨</small><b data-planner-rain>--%</b></span>
+      </div>
+      <p class="planner-weather-note" data-planner-weather-note>天氣資料載入後，會自動調整推薦。</p>
+      <div class="planner-result-actions">
+        <a class="btn btn-primary" href="/routes/easy-walk/" data-planner-route-link><Icon name="route" size={17} /> 查看路線</a>
+        <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681" target="_blank" rel="noopener noreferrer"><Icon name="external" size={17} /> 導航入口</a>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<script>
+  type RouteId = "quick" | "easy" | "classic" | "family";
+  type Level = "good" | "watch" | "avoid";
+
+  interface WeatherResponse {
+    current: {
+      condition: string;
+      weatherCode: number;
+      isDay: boolean;
+      apparentTemperature: number;
+    };
+    today: {
+      maxTemperature: number;
+      precipitationProbability: number;
+      maxWindGust: number;
+    };
+    advice: { level: Level };
+  }
+
+  interface RouteChoice {
+    id: RouteId;
+    name: string;
+    time: string;
+    href: string;
+    timeScore: Record<string, number>;
+    groupScore: Record<string, number>;
+    avoidsStairs: boolean;
+    stairSensitive: boolean;
+    length: "short" | "medium" | "long";
+  }
+
+  const routes: RouteChoice[] = [
+    { id: "quick", name: "快速登頂線", time: "30–45 分鐘", href: "/routes/quick-summit/", timeScore: { short: 8, medium: 2, half: 0 }, groupScore: { solo: 4, family: -3, senior: -5 }, avoidsStairs: false, stairSensitive: true, length: "short" },
+    { id: "easy", name: "林蔭散步線", time: "約 60 分鐘", href: "/routes/easy-walk/", timeScore: { short: 1, medium: 8, half: 2 }, groupScore: { solo: 2, family: 4, senior: 5 }, avoidsStairs: true, stairSensitive: false, length: "medium" },
+    { id: "classic", name: "經典環線", time: "90–120 分鐘", href: "/routes/classic-loop/", timeScore: { short: -7, medium: 1, half: 9 }, groupScore: { solo: 4, family: 0, senior: -2 }, avoidsStairs: true, stairSensitive: false, length: "long" },
+    { id: "family", name: "親子與長者路線", time: "60–90 分鐘", href: "/routes/family/", timeScore: { short: 0, medium: 6, half: 3 }, groupScore: { solo: 0, family: 9, senior: 10 }, avoidsStairs: true, stairSensitive: false, length: "medium" },
+  ];
+
+  const thunderCodes = new Set([82, 95, 96, 99]);
+
+  document.querySelectorAll<HTMLElement>("[data-home-route-planner]").forEach((planner) => {
+    const form = planner.querySelector<HTMLFormElement>("[data-planner-form]");
+    let weather: WeatherResponse | null = null;
+    if (!form) return;
+
+    const text = (selector: string, value: string) => {
+      const element = planner.querySelector(selector);
+      if (element) element.textContent = value;
+    };
+
+    const update = () => {
+      const data = new FormData(form);
+      const time = String(data.get("time") ?? "medium");
+      const group = String(data.get("group") ?? "solo");
+      const stairs = String(data.get("stairs") ?? "yes");
+      const rain = weather?.today.precipitationProbability ?? 0;
+      const gust = weather?.today.maxWindGust ?? 0;
+      const feels = weather ? Math.max(weather.current.apparentTemperature, weather.today.maxTemperature) : 0;
+      const isDay = weather?.current.isDay !== false;
+      const thunder = weather ? thunderCodes.has(weather.current.weatherCode) : false;
+
+      const ranked = routes.map((route) => {
+        let score = route.timeScore[time] + route.groupScore[group];
+        if (stairs === "avoid") score += route.avoidsStairs ? 6 : -10;
+        if (rain >= 30) score += route.stairSensitive ? -10 : route.avoidsStairs ? 3 : 0;
+        if (rain >= 55 && route.length === "long") score -= 5;
+        if (feels >= 32) score += route.length === "short" ? 3 : route.length === "long" ? -9 : 0;
+        if (gust >= 40) score += route.length === "long" ? -5 : 0;
+        return { route, score };
+      }).sort((a, b) => b.score - a.score);
+
+      const selected = ranked[0].route;
+      let level: Level = "good";
+      let badge = "目前推薦";
+      let reason = selected.id === "quick"
+        ? "可用時間較短，這條路線能直接前往主要高點。"
+        : selected.id === "easy"
+          ? "時間剛好，鋪面主線也能依體力隨時折返。"
+          : selected.id === "classic"
+            ? "時間充足，可串連主要涼亭、展望與歷史景點。"
+            : "以鋪面主線和休息點安排節奏，較符合同行成員需求。";
+
+      if (weather && (!isDay || thunder || weather.advice.level === "avoid")) {
+        level = "avoid";
+        badge = isDay ? "建議暫緩" : "夜間不建議出發";
+        reason = thunder
+          ? `目前為${weather.current.condition}，雷雨時不要進入稜線或林間步道；天氣轉穩後可再考慮這條路線。`
+          : !isDay
+            ? "目前為夜間，園內照明與現場路況難以確認；建議改在白天再依這份結果出發。"
+            : "目前天氣風險偏高，建議延後行程；天氣轉穩後可再依這份結果出發。";
+      } else if (weather && (rain >= 30 || gust >= 40 || feels >= 32)) {
+        level = "watch";
+        badge = "調整後推薦";
+        const notes = [];
+        if (rain >= 30) notes.push(selected.stairSensitive ? "階梯遇雨較滑" : "已優先避開階梯支線");
+        if (feels >= 32) notes.push(selected.length === "long" ? "高溫下請縮短路程" : "高溫下已避開長距離路線");
+        if (gust >= 40) notes.push("請縮短高點停留");
+        reason = `${reason}${notes.length ? ` ${notes.join("；")}。` : ""}`;
+      }
+
+      const result = planner.querySelector<HTMLElement>("[data-planner-result]");
+      if (result) result.dataset.level = level;
+      const badgeElement = planner.querySelector<HTMLElement>("[data-planner-badge]");
+      if (badgeElement) badgeElement.className = `badge ${level === "good" ? "badge-ok" : level === "watch" ? "badge-warn" : "badge-danger"}`;
+      text("[data-planner-badge]", badge);
+      text("[data-planner-route-name]", selected.name);
+      text("[data-planner-route-time]", selected.time);
+      text("[data-planner-reason]", reason);
+      const routeLink = planner.querySelector<HTMLAnchorElement>("[data-planner-route-link]");
+      if (routeLink) routeLink.href = selected.href;
+    };
+
+    form.addEventListener("change", update);
+    update();
+
+    fetch("/api/weather", { headers: { Accept: "application/json" } })
+      .then((response) => {
+        if (!response.ok) throw new Error("Weather request failed");
+        return response.json();
+      })
+      .then((response: WeatherResponse) => {
+        weather = response;
+        text("[data-planner-weather-status]", `${weather.current.condition} · 依即時天氣調整推薦`);
+        text("[data-planner-day]", weather.current.isDay !== false ? "日間" : "夜間");
+        text("[data-planner-feels]", `${Math.round(weather.current.apparentTemperature)}°`);
+        text("[data-planner-rain]", `${Math.round(weather.today.precipitationProbability)}%`);
+        text("[data-planner-weather-note]", thunderCodes.has(weather.current.weatherCode)
+          ? "偵測到雷雨天氣代碼，請暫緩進入步道。"
+          : `今日最高降雨機率 ${Math.round(weather.today.precipitationProbability)}%，推薦已納入體感溫度、風勢、路線長度與階梯風險。`);
+        const facts = planner.querySelector<HTMLElement>("[data-planner-weather-facts]");
+        if (facts) facts.hidden = false;
+        update();
+      })
+      .catch(() => {
+        text("[data-planner-weather-status]", "天氣暫時無法取得");
+        text("[data-planner-weather-note]", "目前先依你的三項選擇推薦，出發前請另查即時天氣。");
+      });
+  });
+</script>

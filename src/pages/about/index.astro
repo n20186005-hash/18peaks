@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import credits from "../../data/credits.json";
+const stripHtml = (value: string) => value.replace(/<[^>]*>/g, "").replace(/&amp;/g, "&").replace(/&#039;/g, "'").trim();
+---
+<BaseLayout title="關於十八尖山導覽" description="了解18peaks.com的非官方定位、資料來源、可信度原則、地圖導航與圖片授權。">
+  <PageHero eyebrow="關於 18peaks.com" title="把實用資訊做得可信、好找" lead="這是一個獨立營運的非官方旅遊導覽網站。目標不是取代主管機關，而是把分散的入口、路線、停車與設施資料整理成可使用的工具。" icon="info" />
+  <section class="section"><div class="container-site content-with-aside"><article class="article-card"><div class="article-card-inner prose-tc"><h2>我們在做什麼</h2><p>十八尖山離市區很近，但第一次到訪的人仍會遇到幾個具體問題：從哪裡進、車停哪裡、走多久、哪裡有廁所與飲水。本站以這些決策為核心，搭配 Astro 靜態頁面與 Google 地圖導航建立輕量導覽。</p><h2>資料原則</h2><ul><li>路線與點位標明資料來源類型。</li><li>官方確認、編輯整理與遊客回報分開呈現。</li><li>不把未經核實的資訊稱為「即時」。</li><li>爭議或動態資訊以主管機關公告與現場標示為準。</li></ul><h2>非官方聲明</h2><p>本站與新竹市政府及相關公共機構無隸屬、授權或委託關係，不使用「官方網站」或「官方授權」等表述。</p><h2 id="credits">照片授權</h2><p>網站所用照片來自 Wikimedia Commons 的 Creative Commons 授權作品。原始說明頁面與授權條款如下：</p><div class="table-wrap"><table class="data-table"><thead><tr><th>圖片</th><th>作者</th><th>授權</th></tr></thead><tbody>{Object.entries(credits).map(([, item]) => <tr><td><a href={item.desc_url} target="_blank" rel="noopener">{item.file}</a></td><td>{stripHtml(item.artist)}</td><td>{item.license}</td></tr>)}</tbody></table></div></div></article><aside class="trip-aside"><div class="aside-card"><p class="aside-kicker">技術與資料</p><h2>靜態優先，快速部署</h2><p>Astro 負責生成頁面；Tailwind 提供設計系統；Google Maps 提供位置與導航；產物可直接部署到 Cloudflare Pages。</p></div><a class="btn btn-outline btn-wide" href="/map/"><Icon name="map"/> 查看 Google 地圖</a></aside></div></section>
+</BaseLayout>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageHero from "./PageHero.astro";
+import Icon from "./Icon.astro";
+import RouteWeatherGuide from "./RouteWeatherGuide.astro";
+
+interface Step { name: string; time?: string; note: string; }
+interface Props {
+  title: string; description: string; duration: string; distance: string; difficulty: string;
+  audience: string; stairs: string; image: ImageMetadata; imageAlt: string; steps: Step[];
+  facilities: string[]; cautions: string[];
+  entrance: string; entranceUrl: string; surface: string; returnPlan: string;
+  weatherProfile: "stairs" | "paved" | "long" | "family";
+}
+const p = Astro.props;
+const schema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "首頁", item: "https://18peaks.com/" },
+      { "@type": "ListItem", position: 2, name: "路線", item: "https://18peaks.com/routes/" },
+      { "@type": "ListItem", position: 3, name: p.title },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: p.title,
+    description: p.description,
+    itemListElement: p.steps.map((step, index) => ({ "@type": "ListItem", position: index + 1, name: step.name })),
+  },
+];
+---
+<BaseLayout title={p.title} description={p.description} type="article" {schema}>
+  <PageHero eyebrow="按時間選路線" title={p.title} lead={p.description} icon="route" />
+  <section class="section">
+    <div class="container-site detail-grid">
+      <article class="article-card">
+        <img class="route-cover" src={p.image.src} width={p.image.width} height={p.image.height} alt={p.imageAlt} />
+        <div class="route-facts">
+          <div><Icon name="clock" /><span>建議時間</span><strong>{p.duration}</strong></div>
+          <div><Icon name="route" /><span>估計距離</span><strong>{p.distance}</strong></div>
+          <div><Icon name="mountain" /><span>難度</span><strong>{p.difficulty}</strong></div>
+          <div><Icon name="users" /><span>適合</span><strong>{p.audience}</strong></div>
+        </div>
+        <div class="prose-tc route-copy">
+          <RouteWeatherGuide profile={p.weatherProfile} />
+          <div class="route-planning-grid" aria-label="路線行前摘要">
+            <div><span>建議入口</span><strong>{p.entrance}</strong><a href={p.entranceUrl} target="_blank" rel="noopener noreferrer">開啟入口導航 <Icon name="external" size={14} /></a></div>
+            <div><span>路面與遮蔭</span><strong>{p.surface}</strong></div>
+            <div><span>折返安排</span><strong>{p.returnPlan}</strong></div>
+            <div><span>資料性質</span><strong>公開圖資規劃</strong><small>時間與距離均為估算</small></div>
+          </div>
+          <h2>分段路線</h2>
+          <ol class="route-steps">
+            {p.steps.map((step) => <li><span class="step-name">{step.name}</span>{step.time && <span class="step-time">{step.time}</span>}<br/><span class="step-note">{step.note}</span></li>)}
+          </ol>
+          <div class="two-col-notes">
+            <div><h2>沿途設施</h2><ul>{p.facilities.map((item) => <li>{item}</li>)}</ul></div>
+            <div><h2>注意事項</h2><ul>{p.cautions.map((item) => <li>{item}</li>)}</ul></div>
+          </div>
+          <div class="note-box">路線距離、時間與步驟依公開圖資規劃，並非現場實測；實際通行請以入口導覽圖、圍欄與主管機關公告為準。</div>
+        </div>
+      </article>
+      <aside class="trip-aside">
+        <div class="aside-card"><p class="aside-kicker">路線條件</p><h2>{p.stairs}</h2><p>出發前先查看即時天氣與園區公告；雨後請避開階梯及泥土支線。</p></div>
+        <a class="btn btn-primary btn-wide" href="/map/#park-map"><Icon name="map" /> 查看園內設施圖</a>
+        <a class="btn btn-outline btn-wide" href="/routes/"><Icon name="arrow" /> 比較其他路線</a>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

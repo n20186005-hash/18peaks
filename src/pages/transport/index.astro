@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import city from "../../assets/img/city-view-2.jpg";
+---
+<BaseLayout title="十八尖山怎麼去：火車站、公車、YouBike 與開車" description="從新竹火車站前往十八尖山的步行、公車、YouBike 與開車方式，以及市區半日遊安排。">
+  <PageHero eyebrow="新竹市區就能出發" title="從火車站到山腳，不必很複雜" lead="十八尖山位於新竹市區東南側。從火車站可步行、公車或 YouBike 接駁；開車首訪則以博愛街入口最直覺。" icon="bus" />
+  <section class="section"><div class="container-site"><div class="answer-box"><p class="q">從新竹火車站怎麼去十八尖山？</p><p>步行約 25–35 分鐘、YouBike 約 10–15 分鐘，也可搭市區公車至新竹高商或新竹高中周邊站點，再步行至博愛街入口。</p></div><div class="card-grid cols-2"><div class="icon-card"><Icon name="route" size={29}/><h3>步行</h3><p>適合天氣舒適、想串連新竹公園的旅客。市區路口多，請依行人號誌通行。</p></div><div class="icon-card"><Icon name="bus" size={29}/><h3>公車</h3><p>可查詢停靠新竹高商、新竹高中周邊路線；班次與站位以即時公車資訊為準。</p></div><div class="icon-card"><Icon name="bike" size={29}/><h3>YouBike</h3><p>新竹高商與新竹高中旁有站點。出發前用官方系統確認車輛與空柱。</p></div><div class="icon-card"><Icon name="parking" size={29}/><h3>開車</h3><p>首訪導航博愛街停車場；若從寶山路端進入，建議先確認停車場與入口的相對位置。</p></div></div></div></section>
+  <section class="section section-soft"><div class="container-site"><div class="feature-row"><div class="feature-image"><img src={city.src} width={city.width} height={city.height} alt="十八尖山俯瞰新竹市區" loading="lazy"/></div><div class="feature-copy"><span class="feature-number">半日遊提案</span><h2>把十八尖山放進市區行程</h2><p>上午從火車站出發，先走一小時林蔭路線，中午返回新竹公園與市區用餐。它更像一座隨時能進入的城市森林，不需要把行程安排成遠程登山。</p><div style="display:flex;flex-wrap:wrap;gap:9px"><a class="btn btn-forest" href="/routes/easy-walk/"><Icon name="route"/> 60 分鐘路線</a><a class="btn btn-outline" href="/entrances/"><Icon name="pin"/> 入口比較</a></div></div></div></div></section>
+</BaseLayout>

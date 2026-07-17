@@ -1,0 +1,11 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import youbike from "../../assets/img/youbike-station.jpg";
+---
+<BaseLayout title="十八尖山停車攻略：汽車、機車與 YouBike" description="整理十八尖山博愛街與寶山路端停車場、機車停車、YouBike 站點及入口導航。">
+  <PageHero eyebrow="到入口的最後一公里" title="停好車，再安心上山" lead="博愛街端車位與交通選擇較集中；寶山路端適合支線行程，但停車位置較分散。費率與管制請以現場標示為準。" icon="parking" />
+  <section class="section"><div class="container-site"><div class="answer-box"><p class="q">開車去十八尖山停哪裡？</p><p>第一次到訪建議導航至「十八尖山博愛街停車場」，再步行至博愛街入口；花季與週末早晨容易滿位，建議提早到或改搭公車、YouBike。</p></div><div class="card-grid cols-3"><div class="icon-card"><Icon name="parking" size={30}/><h3>博愛街停車場</h3><p>距主要入口近，最適合首訪。本站導航座標為 120.98689, 24.795202。</p><a class="text-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=24.795202%2C120.98689">開啟導航 <Icon name="external" size={15}/></a></div><div class="icon-card"><Icon name="parking" size={30}/><h3>高峰植物園停車場</h3><p>位於寶山路端，適合走南側支線或順遊植物園；現場車位依時段變化。</p><a class="text-link" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=24.787825%2C120.982998">開啟導航 <Icon name="external" size={15}/></a></div><div class="icon-card"><Icon name="bike" size={30}/><h3>機車與自行車</h3><p>寶山路端設有機車停車區；博愛街周邊另有 3 處 YouBike 站。</p><a class="text-link" href="/map/">打開 Google 地圖 <Icon name="arrow" size={15}/></a></div></div></div></section>
+  <section class="section section-soft"><div class="container-site"><div class="feature-row"><div class="feature-image"><img src={youbike.src} width={youbike.width} height={youbike.height} alt="YouBike 租借站" loading="lazy"/></div><div class="feature-copy"><span class="feature-number">不用找車位的選擇</span><h2>從市區騎 YouBike</h2><p>新竹高中、新竹高商周邊都有 YouBike 站點，適合從火車站或市中心接駁。還車前請在官方 App 確認空柱，並預留步行到入口的時間。</p><a class="btn btn-forest" href="/transport/"><Icon name="bike"/> 查看交通方式</a></div></div><div class="note-box">花季、週末清晨與活動期間可能有臨時交通管制。本站不顯示未經核實的即時剩餘車位；費用與開放狀態一律以現場牌面及主管機關公告為準。</div></div></section>
+</BaseLayout>

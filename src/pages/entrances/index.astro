@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import boai from "../../assets/img/park-stele.jpg";
+import baoshan from "../../assets/img/baoshan-entrance.jpg";
+---
+<BaseLayout title="十八尖山入口比較：博愛街 vs. 寶山路" description="比較十八尖山博愛街與寶山路入口的停車、交通、路線難度與適合對象，並提供一鍵導航。">
+  <PageHero eyebrow="先選入口，再選路線" title="博愛街，還是寶山路？" lead="第一次到訪、開車或帶家人，優先選博愛街；想走防空洞、桐花步道或安排穿越，再考慮寶山路。" icon="pin" />
+  <section class="section"><div class="container-site content-with-aside"><article class="article-card"><div class="article-card-inner prose-tc"><div class="answer-box"><p class="q">第一次去十八尖山從哪裡上？</p><p>優先選擇博愛街入口：周邊停車、公車與 YouBike 資訊較清楚，銜接鋪面主線也最直覺。</p></div><div class="table-wrap"><table class="data-table"><thead><tr><th>比較</th><th>博愛街入口</th><th>寶山路入口</th></tr></thead><tbody><tr><td class="emph">適合</td><td>首訪、親子、長者</td><td>支線探索、穿越</td></tr><tr><td class="emph">停車</td><td>入口旁有停車場</td><td>高峰植物園周邊較分散</td></tr><tr><td class="emph">大眾運輸</td><td>公車與 YouBike 較方便</td><td>步行接駁較長</td></tr><tr><td class="emph">路線印象</td><td>鋪面主線、方向直覺</td><td>階梯與支線選擇較多</td></tr></tbody></table></div></div></article><aside class="trip-aside"><div class="aside-card"><p class="aside-kicker">導航前再確認</p><h2>入口不是山名搜尋結果</h2><p>直接搜尋「十八尖山」可能被帶到山體中間。請使用下方已帶座標的入口連結。</p></div><a class="btn btn-primary btn-wide" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=24.79547%2C120.98681"><Icon name="external"/> 導航博愛街入口</a><a class="btn btn-outline btn-wide" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=24.788673%2C120.981396"><Icon name="external"/> 導航寶山路入口</a></aside></div></section>
+  <section class="section section-soft"><div class="container-site"><div class="feature-row" id="boai"><div class="feature-image"><img src={boai.src} width={boai.width} height={boai.height} alt="十八尖山公園石碑"/></div><div class="feature-copy"><span class="feature-number">01 · 首訪推薦</span><h2>博愛街入口</h2><p>鄰近博愛街停車場、新竹高商公車站與 YouBike。由此銜接鋪面主線，適合散步、親子與長者，也方便行程結束後回到同一點。</p><p class="verify-line">導航座標：120.98681, 24.79547</p></div></div><div class="feature-row" id="baoshan"><div class="feature-image"><img src={baoshan.src} width={baoshan.width} height={baoshan.height} alt="十八尖山寶山路入口"/></div><div class="feature-copy"><span class="feature-number">02 · 支線探索</span><h2>寶山路入口</h2><p>鄰近高峰植物園與防空洞、桐花步道方向，適合熟悉路線或安排穿越的人。周邊車位不如博愛街端集中，建議先看地圖。</p><p class="verify-line">導航座標：120.981396, 24.788673</p></div></div></div></section>
+</BaseLayout>

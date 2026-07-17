@@ -1,0 +1,12 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import tung from "../../assets/img/tung-blossom-trail.jpg";
+import plum from "../../assets/img/plum-pavilion.jpg";
+---
+<BaseLayout title="十八尖山花季指南：賞花月、桐花與桂花" description="十八尖山每年3月前後賞花月、4至5月桐花與秋季桂花指南，包含入口、人潮與雨天注意事項。">
+  <PageHero eyebrow="依季節安排行程" title="花開有時，別把預估當花況" lead="每年花期會受溫度與降雨影響。本站提供月份與路線方向，不使用未核實的「目前盛開」描述；即時花況請查當年市府公告。" icon="flower" />
+  <section class="section"><div class="container-site"><div class="answer-box"><p class="q">十八尖山花季是什麼時候？</p><p>大型賞花活動多在 3 月前後，4–5 月可留意桐花，秋季則有桂花香。實際花期與活動日期每年不同，出發前務必確認當年度公告。</p></div><div class="table-wrap"><table class="data-table"><thead><tr><th>季節</th><th>主題</th><th>較合適入口</th><th>提醒</th></tr></thead><tbody><tr><td class="emph">3 月前後</td><td>賞花月與花區</td><td>博愛街</td><td>活動期人潮、車流最多</td></tr><tr><td class="emph">4–5 月</td><td>桐花</td><td>寶山路端</td><td>雨後落花與階梯濕滑</td></tr><tr><td class="emph">秋季</td><td>桂花</td><td>依主線前往</td><td>香氣不等於大面積花景</td></tr></tbody></table></div></div></section>
+  <section class="section section-soft"><div class="container-site"><div class="feature-row"><div class="feature-image"><img src={plum.src} width={plum.width} height={plum.height} alt="十八尖山梅花亭" loading="lazy"/></div><div class="feature-copy"><span class="feature-number">3 月前後</span><h2>賞花月</h2><p>花區與活動通常集中在博愛街入口周邊，是全年人潮最密集的時段。若只想散步，可避開周末中午並改搭大眾運輸。</p><a class="btn btn-forest" href="/transport/"><Icon name="bus"/> 查看交通方式</a></div></div><div class="feature-row"><div class="feature-image"><img src={tung.src} width={tung.width} height={tung.height} alt="十八尖山桐花步道" loading="lazy"/></div><div class="feature-copy"><span class="feature-number">4–5 月</span><h2>桐花步道</h2><p>寶山路端支線可留意桐花，但落花配合雨水可能使階梯與石面更滑。欣賞時不要搖樹或進入植被區，沿開放步道通行。</p></div></div></div></section>
+</BaseLayout>

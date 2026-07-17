@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageHero from "../../components/PageHero.astro";
+import Icon from "../../components/Icon.astro";
+import WeatherCard from "../../components/WeatherCard.astro";
+---
+<BaseLayout title="十八尖山今日狀況：出發前檢查" description="出發前確認十八尖山天氣、降雨、園區開放、步道路況與交通管制；本站明確標示資料來源與時效。">
+  <PageHero eyebrow="出發前一分鐘" title="今日天氣與步道狀況" lead="天氣會自動更新；園區開放、施工與步道路況仍以主管機關公告和現場標示為準。兩種資訊分開看，才不會把好天氣誤認為步道一定開放。" icon="sun" />
+
+  <section class="section"><div class="container-site"><WeatherCard context="status" /></div></section>
+
+  <section class="section section-soft"><div class="container-site">
+    <div class="section-head"><div><p class="eyebrow"><Icon name="shield" size={16}/> 園區與步道</p><h2>天氣會更新，開放狀態仍要確認</h2><p class="section-lead">本站目前沒有全天候現場編輯，因此不顯示沒有來源的綠色燈號。</p></div></div>
+    <div class="status-board"><div class="status-main"><div class="status-top"><div><span class="badge badge-unknown">人工狀態未知</span><h2>尚未取得 24 小時內的現場確認</h2></div><Icon name="shield" size={38}/></div><div class="status-grid"><div class="status-item"><span>園區開放</span><strong>查看新竹市政府公告</strong></div><div class="status-item"><span>步道路況</span><strong>依現場圍欄與告示</strong></div><div class="status-item"><span>施工維護</span><strong>查看主管機關最新消息</strong></div><div class="status-item"><span>活動與交通</span><strong>依現場及活動公告</strong></div></div></div><div class="status-side"><Icon name="info" size={29}/><h3>查兩個官方來源</h3><p>中央氣象署適合查看雷達與警特報；新竹市政府公告則用來確認施工、活動或臨時管制。</p><div class="status-actions"><a class="btn btn-light" href="https://www.cwa.gov.tw/" target="_blank" rel="noopener">中央氣象署 <Icon name="external" size={15}/></a><a class="btn btn-white-outline" href="https://www.hccg.gov.tw/" target="_blank" rel="noopener">新竹市政府 <Icon name="external" size={15}/></a></div></div></div>
+  </div></section>
+
+  <section class="section"><div class="container-site"><div class="section-head"><div><p class="eyebrow"><Icon name="route" size={16}/> 一分鐘檢查</p><h2>出發、抵達、行走中，各看一件事</h2></div></div><div class="card-grid cols-3"><div class="icon-card"><Icon name="sun" size={28}/><h3>出發前：看天氣變化</h3><p>確認降雨機率、雷雨警報與陣風。高溫時改走短線，並準備足量飲水。</p></div><div class="icon-card"><Icon name="pin" size={28}/><h3>抵達時：看入口告示</h3><p>現場圍欄、施工牌與封閉標示優先於網路資訊；不要跨越封鎖線。</p></div><div class="icon-card"><Icon name="route" size={28}/><h3>行走中：看路面與身體</h3><p>雨後階梯與落葉容易濕滑；遇雷聲、強風或身體不適，立即折返。</p></div></div></div></section>
+
+  <section class="section section-soft"><div class="container-site"><div class="section-head"><div><p class="eyebrow"><Icon name="shield" size={16}/> 資料怎麼判斷</p><h2>每一種消息，可信度不一樣</h2></div></div><div class="card-grid cols-3"><div class="icon-card"><span class="badge badge-ok">A 級</span><h3>官方確認</h3><p>主管機關公告、交通管制或維護通知，保留來源與發布日期。</p></div><div class="icon-card"><span class="badge badge-warn">B 級</span><h3>編輯實測</h3><p>由本站編輯現場確認，記錄時間、路線與可見狀況；超過 24 小時自動失效。</p></div><div class="icon-card"><span class="badge badge-unknown">C 級</span><h3>遊客回報</h3><p>作為線索顯示，不直接當成事實；需有第二來源或編輯複核才能升級。</p></div></div><div class="note-box">自動天氣有明確更新時間，但它只描述預報，不代表園區或設施開放。無法確認來源與有效期的現場狀態，一律顯示「未知」。</div></div></section>
+</BaseLayout>

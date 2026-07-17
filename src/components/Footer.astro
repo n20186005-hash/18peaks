@@ -1,0 +1,45 @@
+---
+import Icon from "./Icon.astro";
+const path = Astro.url.pathname;
+const quick = [
+  ["mountain", "首頁", "/"],
+  ["route", "路線", "/routes/"],
+  ["map", "地圖", "/map/"],
+  ["parking", "停車", "/parking/"],
+  ["sun", "狀況", "/status/"],
+];
+---
+
+<footer class="site-footer">
+  <div class="container-site footer-grid">
+    <div class="footer-brand">
+      <p class="footer-title">十八尖山導覽</p>
+      <p class="footer-en">Eighteen Peaks Hsinchu</p>
+      <p>把入口、路線、停車與沿途設施整理在同一個地方，讓每一次上山都更簡單。</p>
+    </div>
+    <div>
+      <p class="footer-heading">規劃行程</p>
+      <a href="/routes/">選擇路線</a><a href="/route-map/">十八尖山路線圖</a><a href="/map/">線上地圖</a><a href="/entrances/">入口比較</a><a href="/parking/">停車攻略</a><a href="/facilities/">廁所與飲水</a>
+    </div>
+    <div>
+      <p class="footer-heading">認識十八尖山</p>
+      <a href="/attractions/">代表景點</a><a href="/flowers/">花季指南</a><a href="/history/">歷史與生態</a><a href="/faq/">常見問題</a><a href="/about/">關於本站</a>
+    </div>
+    <div>
+      <p class="footer-heading">出發之前</p>
+      <a href="/status/">查看今日狀況</a><a href="/transport/">交通方式</a><a href="/map/">打開 Google 地圖</a>
+    </div>
+  </div>
+  <div class="container-site footer-bottom">
+    <p>本站為獨立營運的非官方旅遊導覽網站，與新竹市政府及相關公共機構無隸屬關係。開放狀態與公共安全資訊請以主管機關最新公告為準。</p>
+    <p>© 2026 18peaks.com</p>
+  </div>
+</footer>
+
+<nav class="bottom-nav" aria-label="快速導覽">
+  {quick.map(([icon, label, href]) => (
+    <a href={href} class:list={{ active: href === "/" ? path === "/" : path.startsWith(href) }}>
+      <Icon name={icon} size={20} /><span>{label}</span>
+    </a>
+  ))}
+</nav>
